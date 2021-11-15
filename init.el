@@ -172,11 +172,16 @@
 (provide 'init)
 
 
-(set-default-font "22")
+
+(set-default-font "18")
 (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
 (require 'eaf)
 (require 'eaf-browser)
 (require 'eaf-pdf-viewer)
+(add-to-list 'load-path "~/.emacs.d/site-lisp/eaf-terminal/")
+(require 'eaf-terminal)
+(add-to-list 'load-path "~/.emacs.d/site-lisp/eaf-org-previewer/")
+(require 'eaf-org-previewer)
 
 
 (setq eaf-proxy-type "http")
@@ -184,16 +189,18 @@
 (setq eaf-proxy-port "42705")
 
 (setq org-agenda-files (list "~/org-file/my_org.org"))
-(setq org-agenda-repeating-timestamp-show-all t)
+;; (setq org-agenda-repeating-timestamp-show-all t)
 
 (setq org-agenda-span 3)
 
-
+(global-set-key (kbd "<M-up>") 'shrink-window)
+(global-set-key (kbd "<M-down>") 'enlarge-window)
+(global-set-key (kbd "<M-left>") 'shrink-window-horizontally)
+(global-set-key (kbd "<M-right>") 'enlarge-window-horizontally)
 
 
 ;; Local Variables:
 ;; coding: utf-8
 ;; no-byte-compile: t
-
 ;; End:
 ;;; init.el ends here
