@@ -193,6 +193,62 @@
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/elisp/"))
 (require 'grep-dired)
+(require 'sdcv)
+
+
+(setq sdcv-say-word-p t)               ;say word after translation
+
+(setq sdcv-dictionary-data-dir "/usr/share/stardict/dic/") ;setup directory of stardict dictionary
+
+(setq sdcv-dictionary-simple-list    ;setup dictionary list for simple search
+      '("懒虫简明英汉词典"
+        "懒虫简明汉英词典"
+        ))
+
+(setq sdcv-dictionary-complete-list     ;setup dictionary list for complete search
+      '(
+        "懒虫简明英汉词典"
+        "懒虫简明汉英词典"
+        ))
+
+
+
+
+(require 'company-english-helper)
+(global-set-key (kbd "M-k") 'sdcv-search-pointer+)
+
+
+(require 'pyim)
+
+(setq default-input-method "pyim")
+
+;; 金手指设置，可以将光标处的编码，比如：拼音字符串，转换为中文。
+(global-set-key (kbd "M-j") 'pyim-convert-string-at-point)
+
+;; 按 "C-<return>" 将光标前的 regexp 转换为可以搜索中文的 regexp.
+(define-key minibuffer-local-map (kbd "C-<return>") 'pyim-cregexp-convert-at-point)
+
+;; 我使用全拼
+(pyim-default-scheme 'quanpin)
+
+
+;; 开启代码搜索中文功能（比如拼音，五笔码等）
+(pyim-isearch-mode 1)
+
+;; 设置选词框的绘制方式
+(if (posframe-workable-p)
+    (setq pyim-page-tooltip 'posframe)
+  (setq pyim-page-tooltip 'popup))
+
+;; 显示5个候选词。
+(setq pyim-page-length 5)
+
+;; Basedict
+(require 'pyim-basedict)
+(pyim-basedict-enable)
+
+
+
 ;; Local Variables:
 ;; coding: utf-8
 ;; no-byte-compile: t
