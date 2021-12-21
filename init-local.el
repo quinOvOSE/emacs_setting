@@ -83,5 +83,10 @@
 (require 'company-english-helper)
 (global-set-key (kbd "M-k") 'sdcv-search-pointer+)
 
+(add-to-list 'load-path (expand-file-name "~/org-file/"))
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+(require 'org)
+(setq org-agenda-files (quote ("~/org-file"
+                               )))
 
 (provide 'init-local)
