@@ -89,4 +89,30 @@
 (setq org-agenda-files (quote ("~/org-file"
                                )))
 
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/RoamNotes"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
+
+
+(setq org-roam-graph-executable "dot")
+(setq eaf-pdf-dark-mode nil)
+
+(add-to-list 'load-path "~/.emacs.d/private/org-roam-ui")
+(load-library "org-roam-ui")
+
+
+
+
 (provide 'init-local)
