@@ -1,14 +1,14 @@
 ;;my own system
 
-(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
-(require 'eaf)
-(require 'eaf-browser)
-(require 'eaf-pdf-viewer)
+;;(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+;;(require 'eaf)
+;;(require 'eaf-browser)
+;;(require 'eaf-pdf-viewer)
 
 
-(setq eaf-proxy-type "http")
-(setq eaf-proxy-host "127.0.0.1")
-(setq eaf-proxy-port "42705")
+;;(setq eaf-proxy-type "http")
+;;(setq eaf-proxy-host "127.0.0.1")
+;;(setq eaf-proxy-port "42705")
 
 (setq org-agenda-span 3)
 (global-set-key (kbd "<M-up>") 'shrink-window)
@@ -83,35 +83,68 @@
 (require 'company-english-helper)
 (global-set-key (kbd "M-k") 'sdcv-search-pointer+)
 
-(add-to-list 'load-path (expand-file-name "~/org-file/"))
+(add-to-list 'load-path (expand-file-name "~/org-file"))
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
 (require 'org)
-(setq org-agenda-files (quote ("~/org-file"
-                               )))
+
+;(setq org-agenda-files (quote ("~/org-file")))
+;(setq org-agenda-files '("~/org-file"))
+(setq org-agenda-files (directory-files-recursively "~/org-file/" "\\.org$"))
 
 (use-package org-roam
   :ensure t
   :custom
   (org-roam-directory (file-truename "~/RoamNotes"))
+  (org-roam-completion-everywhere t)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
+         :map org-mode-map
+         ("C-M-i"    . completion-at-point))
   :config
+  (org-roam-setup)
   (org-roam-db-autosync-mode)
+  (setq org-roam-mode-sections
+        (list #'org-roam-backlinks-insert-section
+              #'org-roam-reflinks-insert-section
+              #'org-roam-unlinked-references-insert-section
+              ))
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 
 
 (setq org-roam-graph-executable "dot")
-(setq eaf-pdf-dark-mode nil)
 
-(add-to-list 'load-path "~/.emacs.d/private/org-roam-ui")
-(load-library "org-roam-ui")
 
+;(add-to-list 'load-path "~/.emacs.d/private/org-roam-ui")
+
+(setq org-roam-capture-templates
+      '(
+        ("d" "default" plain "%?"
+         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        ("l" "literature" plain "- Type: Literature\n- Scope: \n- Author: \n* 相关工作\n\n%?\n* 观点\n\n* 模型和方法\n\n* 实验\n\n* 结论\n"
+         :target (file+head "literature/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        ("n" "nation" plain "- Type: Nation\n"
+         :target (file+head "nation/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        ("o" "organization" plain "- Type: Organization\n- City: \n- Nation: "
+         :target (file+head "organization/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        ("p" "person" plain "- Type: Person\n- Birth year: \n- Organization: \n- Occupation: \n"
+         :target (file+head "person/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        ("c" "concept" plain "- Type: Concetpt\n- Scope: \n- Definition: \n- Segmentation: \n"
+         :target (file+head "concept/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        )
+
+      )
+
+                                        ;(load-library "org-roam-ui")
 
 
 
